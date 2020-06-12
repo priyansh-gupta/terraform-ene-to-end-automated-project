@@ -1,4 +1,4 @@
-provider "aws" {
+provider "aws" {                                          // it decides the plugin to be downloaded by init command
   region = "ap-south-1"
   profile = "myvimal"
 }
@@ -13,7 +13,7 @@ resource "aws_instance" "web" {
   connection {
     type     = "ssh"
     user     = "ec2-user"
-    private_key = file("C:/Users/Vimal Daga/Downloads/mykey111222.pem")
+    private_key = file("C:/Users/Vimal Daga/Downloads/mykey111222.pem")    //path of where private key is present 
     host     = aws_instance.web.public_ip
   }
 
@@ -43,13 +43,15 @@ resource "aws_ebs_volume" "esb1" {
 
 resource "aws_volume_attachment" "ebs_att" {
   device_name = "/dev/sdh"
-  volume_id   = "${aws_ebs_volume.esb1.id}"
+  volume_id   = "${aws_ebs_volume.esb1.id}"    // variable is stored in this manner
   instance_id = "${aws_instance.web.id}"
-  force_detach = true
+  force_detach = true                          // we can not directly detach a storage from cloud , so during terraform destroy 
+	                                                we have to force detach the volume
+	
 }
 
 
-output "myos_ip" {
+output "myos_ip" {                          // shows the IP during output dynamically
   value = aws_instance.web.public_ip
 }
 
@@ -64,7 +66,7 @@ resource "null_resource" "nulllocal2"  {
 
 resource "null_resource" "nullremote3"  {
 
-depends_on = [
+depends_on = [                                       // This whole task depends on mounting of the volume 
     aws_volume_attachment.ebs_att,
   ]
 
