@@ -29,7 +29,9 @@ v) then we have attach a volume using another resource type called #aws_ebs_volu
 vi) then we attached volume to the instance using resource type #aws_volume_attachement after that we formatted and mounted the volume using another provisioner with keyword as #remote-exec that run mkfs.ext4 and mount command then we clone the git repo in that volume.
 
 6. whenever we use provisioner with multiple resources then Terraform try to launch null resource first. But some time we need a sequence as all these jobs are dependent on each other so we need to provide an order of dependency in between these jobs that would be provided by #depends_on variable in resource type as null_resource.
+
 i) if we try to destory the running instance using #terraform_destory command and some volume is attached to it then it show error like volume is busy then we need to go to the console and manually de-attach the volume form instance.
+
 ii) if we are trying to clone the git repo in some folder and folder is not empty then git throwing an error or warning. So that we need to provide an empty folder to it.
 
 7. in this class we have automate the all the basic thing which are required to launch a fresh webserver using a small piece of code it is little bit painful when we try to create for first time but after that it will it easy and work as a document so that we can share it to other people if the requirement are same.
